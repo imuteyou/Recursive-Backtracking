@@ -1,0 +1,77 @@
+//Se citeşte un număr natural nenul n. Să se afişeze, în ordine lexicografică, permutările mulţimii {1,2,..,n}.
+
+
+#pragma once
+
+#include <iostream>
+#include <fstream>
+#include <Windows.h>
+
+void BacktrackStack(int nPosition);
+void PrintStack(int nPosition);
+bool IsStackSolution(int nPosition);
+bool ValidateStack(int nPosition);
+
+#define SIZE 9 // STACK SIZE
+
+std::ifstream in("permutari.in");
+std::ofstream out("permutari.out");
+
+int n;
+int nStack[SIZE];
+
+int main()
+{
+	in >> n;
+
+	BacktrackStack(1);
+
+	system("PAUSE");
+}
+
+void BacktrackStack(int nPosition)
+{
+	for (int i = 1; i <= n; i++)
+	{
+		nStack[nPosition] = i;
+
+		if (ValidateStack(nPosition))
+		{
+			if (IsStackSolution(nPosition))
+				PrintStack(nPosition);
+			else
+				BacktrackStack(nPosition + 1);
+		}
+	}
+}
+
+bool ValidateStack(int nPosition)
+{
+	bool bReturn = 1;
+
+	for (int i = 1; i <= nPosition - 1; i++)
+	{
+		if (nStack[i] == nStack[nPosition])
+			bReturn = 0;
+	}
+
+	return bReturn;
+}
+
+bool IsStackSolution(int nPosition)
+{
+	if (nPosition == n)
+		return 1;
+	else
+		return 0;
+}
+
+void PrintStack(int nPosition)
+{
+	for (int i = 1; i <= nPosition; i++)
+	{
+		out << nStack[i] << " ";
+	}
+
+	out << std::endl;
+}
